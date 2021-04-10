@@ -1,0 +1,37 @@
+package Strikeboom.HTTPHoster.resourcesfolder;
+
+import Strikeboom.HTTPHoster.Main;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+public class ResourceFolder {
+    File resourceFolder;
+    Map<File,String> resourceFiles = new HashMap<>();
+    public ResourceFolder() {
+        resourceFolder = new File("resources/");
+        if (!resourceFolder.exists()) {
+            resourceFolder.mkdirs();
+            Main.fileCreated = true;
+        }
+        try {
+            //adds files to hashmap
+            Files.walk(resourceFolder.toPath())
+                    .filter(Files::isRegularFile)
+                    .forEach(path -> resourceFiles.put(path.toFile(),path.toString().substring("resources".length()).replaceAll("\\\\","/")));
+            if (resourceFiles.isEmpty()) {
+                System.out.println("Starting without resource folder because folder is empty");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Map<File, String> getResourceFiles() {
+        return resourceFiles;
+    }
+}
