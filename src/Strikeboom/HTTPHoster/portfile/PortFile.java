@@ -15,7 +15,6 @@ public class PortFile {
                 FileWriter writer = new FileWriter(portFile);
                 writer.write("55566");
                 writer.close();
-                Main.fileCreated = true;
             } catch (IOException e) {
                 e.printStackTrace();
             }

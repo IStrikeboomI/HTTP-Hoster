@@ -16,7 +16,6 @@ public class ResourceFolder {
         resourceFolder = new File("resources/");
         if (!resourceFolder.exists()) {
             resourceFolder.mkdirs();
-            Main.fileCreated = true;
         }
         try {
             //adds files to hashmap

@@ -9,15 +9,11 @@ import javax.swing.*;
 
 public class Main {
     public static int port;
-    public static boolean fileCreated = false;
     public static void main(String[] args) {
         CopyReadMeFile.copy();
         PortFile portFile = new PortFile();
         port = portFile.getPort();
         ResourceFolder rf = new ResourceFolder();
-        if (fileCreated) {
-            sendErrorPrompt("New files created, restart program");
-        }
         FileHoster fh = new FileHoster(port);
         rf.getResourceFiles().forEach(fh::host);
         fh.start();
