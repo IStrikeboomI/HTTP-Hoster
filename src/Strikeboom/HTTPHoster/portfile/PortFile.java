@@ -23,7 +23,7 @@ public class PortFile {
     public int getPort() {
         try {
             Scanner reader = new Scanner(portFile);
-            String portString = reader.nextLine();
+            String portString = reader.nextLine().trim();
             reader.close();
             if (isNumber(portString)) {
                 int port = Integer.parseInt(portString);

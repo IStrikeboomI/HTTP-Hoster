@@ -1,15 +1,20 @@
 package Strikeboom.HTTPHoster.filehoster;
 
+import Strikeboom.HTTPHoster.Main;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileHoster {
     HttpServer server;
     int port;
     public static String ip;
+    List<String> fileURLs = new ArrayList<>();
     public FileHoster(int port) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("http://bot.whatismyipaddress.com/").openStream()));
@@ -18,22 +23,30 @@ public class FileHoster {
 
             this.port = port;
             server = HttpServer.create(new InetSocketAddress(port),0);
+            server.setExecutor(null);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public void host(File file, String filePath) {
-        System.out.println("http://" + ip + ":" + port + filePath);
+        fileURLs.add("http://" + ip + ":" + port + filePath);
         server.createContext(filePath,httpExchange -> {
             byte[] bytes = Files.readAllBytes(file.toPath());
             httpExchange.sendResponseHeaders(200,bytes.length);
             OutputStream os = httpExchange.getResponseBody();
             os.write(bytes);
             os.close();
+            httpExchange.close();
         });
     }
     public void start() {
-        server.setExecutor(null);
-        server.start();
+        if (!Main.isRunning) {
+            server.start();
+            Main.isRunning = true;
+        }
     }
+    public List<String> getFileURLs() {
+        return fileURLs;
+    }
+
 }
