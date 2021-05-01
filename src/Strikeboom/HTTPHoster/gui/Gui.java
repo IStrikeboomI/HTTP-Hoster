@@ -70,7 +70,7 @@ public class Gui {
                                         }
                                     });
                                     leftPanel.add(label);
-                                    leftPanel.add(Box.createRigidArea(new Dimension(0, 2)));
+                                    leftPanel.add(Box.createRigidArea(new Dimension(0, 3)));
                                 }
 
                                 JLabel ipLabel = new JLabel("Your IP: " + FileHoster.ip);
