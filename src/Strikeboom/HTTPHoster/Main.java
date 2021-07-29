@@ -1,6 +1,7 @@
 package Strikeboom.HTTPHoster;
 
 import Strikeboom.HTTPHoster.filehoster.FileHoster;
+import Strikeboom.HTTPHoster.filehoster.mimeheader.MimeHeaders;
 import Strikeboom.HTTPHoster.gui.Gui;
 import Strikeboom.HTTPHoster.portfile.PortFile;
 import Strikeboom.HTTPHoster.readmefile.CopyReadMeFile;
@@ -13,6 +14,7 @@ public class Main {
     public static FileHoster fh;
     public static boolean isRunning;
     public static void main(String[] args) {
+        MimeHeaders.init();
         CopyReadMeFile.copy();
         PortFile portFile = new PortFile();
         port = portFile.getPort();

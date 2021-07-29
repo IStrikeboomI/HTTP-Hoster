@@ -1,6 +1,7 @@
 package Strikeboom.HTTPHoster.filehoster;
 
 import Strikeboom.HTTPHoster.Main;
+import Strikeboom.HTTPHoster.filehoster.mimeheader.MimeHeaders;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
@@ -31,6 +32,14 @@ public class FileHoster {
     public void host(File file, String filePath) {
         fileURLs.add("http://" + ip + ":" + port + filePath);
         server.createContext(filePath,httpExchange -> {
+            System.out.println(MimeHeaders.hasExtension(filePath));
+            if (MimeHeaders.hasExtension(filePath)) {
+                System.out.println(MimeHeaders.hasMimeType(MimeHeaders.getExtension(filePath)));
+                if (MimeHeaders.hasMimeType(MimeHeaders.getExtension(filePath))) {
+                    System.out.println(MimeHeaders.getMimeTypeFromExtension(MimeHeaders.getExtension(filePath)));
+                    httpExchange.getResponseHeaders().add("Content-Type",MimeHeaders.getMimeTypeFromExtension(MimeHeaders.getExtension(filePath)));
+                }
+            }
             byte[] bytes = Files.readAllBytes(file.toPath());
             httpExchange.sendResponseHeaders(200,bytes.length);
             OutputStream os = httpExchange.getResponseBody();
