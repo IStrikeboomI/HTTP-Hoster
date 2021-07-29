@@ -32,11 +32,8 @@ public class FileHoster {
     public void host(File file, String filePath) {
         fileURLs.add("http://" + ip + ":" + port + filePath);
         server.createContext(filePath,httpExchange -> {
-            System.out.println(MimeHeaders.hasExtension(filePath));
             if (MimeHeaders.hasExtension(filePath)) {
-                System.out.println(MimeHeaders.hasMimeType(MimeHeaders.getExtension(filePath)));
                 if (MimeHeaders.hasMimeType(MimeHeaders.getExtension(filePath))) {
-                    System.out.println(MimeHeaders.getMimeTypeFromExtension(MimeHeaders.getExtension(filePath)));
                     httpExchange.getResponseHeaders().add("Content-Type",MimeHeaders.getMimeTypeFromExtension(MimeHeaders.getExtension(filePath)));
                 }
             }

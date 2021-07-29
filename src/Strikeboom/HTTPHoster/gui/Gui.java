@@ -12,6 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class Gui {
@@ -52,7 +55,8 @@ public class Gui {
                                         public void mouseClicked(MouseEvent e) {
                                             if (Desktop.isDesktopSupported()) {
                                                 try {
-                                                    Desktop.getDesktop().browse(new URI(label.getText().replaceAll(" ","%20")));
+                                                    URL url = new URL(label.getText());
+                                                    Desktop.getDesktop().browse(new URI(url.toString().replace(url.getPath(),"") + URLEncoder.encode(url.getPath(), StandardCharsets.UTF_8.displayName()).replaceAll("%2F","/").replaceAll("\\+", "%20").replaceAll("%21", "!").replaceAll("%27", "'").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%7E", "~")));
                                                 } catch (IOException | URISyntaxException ioException) {
                                                     ioException.printStackTrace();
                                                 }
