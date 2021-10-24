@@ -15,14 +15,20 @@ public class Main {
     public static boolean isRunning;
     public static void main(String[] args) {
         MimeHeaders.init();
+        //copy the read me file
         CopyReadMeFile.copy();
+        //make the port file or get the port
         PortFile portFile = new PortFile();
         port = portFile.getPort();
+        //create resource folder
         ResourceFolder rf = new ResourceFolder();
         fh = new FileHoster(port);
+        //for each resource make a host
         rf.getResourceFiles().forEach(fh::host);
+        //start gui
         SwingUtilities.invokeLater(Gui::init);
     }
+    //for errors
     public static void sendErrorPrompt(String error) {
         JOptionPane.showMessageDialog(null,error);
         System.exit(0);
