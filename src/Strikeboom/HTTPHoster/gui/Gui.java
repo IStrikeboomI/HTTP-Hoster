@@ -20,27 +20,35 @@ import java.util.Map;
 public class Gui {
     public static void init() {
         try {
+            //make it look like the os gui
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
 
+        //base frame
         JFrame frame = new JFrame("HTTP Hoster");
 
+        //left side (urls)
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.Y_AXIS));
 
+        //right side (start button and settings)
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new GroupLayout(rightPanel));
 
+        //scroll bars
         JScrollPane scrollPane = new JScrollPane(leftPanel);
 
+        //split panes in half
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,scrollPane,rightPanel);
         splitPane.setDividerLocation(290);
         splitPane.setEnabled(false);
 
-        for (int i = 0; i < Main.fh.getFileURLs().size();i++) {
-            JLabel label = new JLabel(Main.fh.getFileURLs().get(i));
+        //make url for each resource url
+        for (String url : Main.fh.getFileURLs()) {
+            //create a label
+            JLabel label = new JLabel(url);
 
             //adds underline and blue to make it look a link
             label.setForeground(Color.BLUE);
@@ -49,18 +57,22 @@ public class Gui {
             attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
             label.setFont(font.deriveFont(attributes));
 
+            //add a mouse listener
             label.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    //open in browser when url is clicked
                     if (Desktop.isDesktopSupported()) {
                         try {
                             URL url = new URL(label.getText());
+                            //format urls for common replacements
                             Desktop.getDesktop().browse(new URI(url.toString().replace(url.getPath(),"") + URLEncoder.encode(url.getPath(), StandardCharsets.UTF_8.displayName()).replaceAll("%2F","/").replaceAll("\\+", "%20").replaceAll("%21", "!").replaceAll("%27", "'").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%7E", "~")));
                         } catch (IOException | URISyntaxException ioException) {
                             ioException.printStackTrace();
                         }
                     }
                 }
+                //change cursor and mouse enter and leave, so it looks clickable
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -70,10 +82,11 @@ public class Gui {
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                 }
             });
+            //add to panel
             leftPanel.add(label);
+            //create spacing
             leftPanel.add(Box.createRigidArea(new Dimension(0, 3)));
         }
-
         JLabel ipLabel = new JLabel("Your IP: " + FileHoster.ip);
         ipLabel.setBounds(5,0,290,30);
         rightPanel.add(ipLabel);
@@ -89,6 +102,7 @@ public class Gui {
         JButton startButton = new JButton("Start");
         startButton.setBounds(100,350,80,40);
         rightPanel.add(startButton);
+        //change text when started running
         startButton.addActionListener(e -> {
             Main.fh.start();
             isRunningLabel.setText("Status: Running");
@@ -97,9 +111,11 @@ public class Gui {
         JButton openResourcesFolderButton = new JButton("Open Resources Folder");
         openResourcesFolderButton.setBounds(60,500,160,40);
         rightPanel.add(openResourcesFolderButton);
+        //on click on the open resources open the folder
         openResourcesFolderButton.addActionListener(e -> {
             if (Desktop.isDesktopSupported()) {
                 try {
+                    //open the folder
                     Desktop.getDesktop().open(new File("resources/"));
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
@@ -112,6 +128,7 @@ public class Gui {
         frame.pack();
         frame.setSize(580, 700);
         frame.setResizable(false);
+        //set to middle
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
