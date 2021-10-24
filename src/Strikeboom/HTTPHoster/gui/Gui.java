@@ -51,43 +51,23 @@ public class Gui {
 
             label.addMouseListener(new MouseAdapter() {
                 @Override
-
                 public void mouseClicked(MouseEvent e) {
-
                     if (Desktop.isDesktopSupported()) {
-
                         try {
-
                             URL url = new URL(label.getText());
-
                             Desktop.getDesktop().browse(new URI(url.toString().replace(url.getPath(),"") + URLEncoder.encode(url.getPath(), StandardCharsets.UTF_8.displayName()).replaceAll("%2F","/").replaceAll("\\+", "%20").replaceAll("%21", "!").replaceAll("%27", "'").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%7E", "~")));
-
                         } catch (IOException | URISyntaxException ioException) {
-
                             ioException.printStackTrace();
-
                         }
-
                     }
-
                 }
-
-
                 @Override
-
                 public void mouseEntered(MouseEvent e) {
-
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
                 }
-
-
                 @Override
-
                 public void mouseExited(MouseEvent e) {
-
                     frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
                 }
             });
             leftPanel.add(label);
@@ -119,17 +99,11 @@ public class Gui {
         rightPanel.add(openResourcesFolderButton);
         openResourcesFolderButton.addActionListener(e -> {
             if (Desktop.isDesktopSupported()) {
-
                 try {
-
                     Desktop.getDesktop().open(new File("resources/"));
-
                 } catch (IOException ioException) {
-
                     ioException.printStackTrace();
-
                 }
-
             }
         });
 
