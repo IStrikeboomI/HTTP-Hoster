@@ -2,6 +2,7 @@ package Strikeboom.HTTPHoster.filehoster;
 
 import Strikeboom.HTTPHoster.Main;
 import Strikeboom.HTTPHoster.filehoster.mimeheader.MimeHeaders;
+import Strikeboom.HTTPHoster.landingpage.LandingPage;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
@@ -28,6 +29,7 @@ public class FileHoster {
             this.port = port;
             server = HttpServer.create(new InetSocketAddress(port),0);
             server.setExecutor(null);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,6 +51,29 @@ public class FileHoster {
             httpExchange.sendResponseHeaders(200,bytes.length);
             OutputStream os = httpExchange.getResponseBody();
             os.write(bytes);
+            os.close();
+            httpExchange.close();
+        });
+    }
+    public void createLandingPage() {
+        //landing page
+        server.createContext("/",httpExchange -> {
+            //html mime header
+            httpExchange.getResponseHeaders().add("Content-Type","text/html");
+
+            //create the landing page
+            LandingPage landingPage = new LandingPage();
+            landingPage.startWriting();
+            for (String url : fileURLs) {
+                landingPage.addATag(url);
+            }
+            landingPage.stopWriting();
+            byte[] pageArray = landingPage.toByteArray();
+
+            //write the page over
+            httpExchange.sendResponseHeaders(200,pageArray.length);
+            OutputStream os = httpExchange.getResponseBody();
+            os.write(pageArray);
             os.close();
             httpExchange.close();
         });

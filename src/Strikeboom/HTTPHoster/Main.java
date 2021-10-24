@@ -25,6 +25,8 @@ public class Main {
         fh = new FileHoster(port);
         //for each resource make a host
         rf.getResourceFiles().forEach(fh::host);
+        //create landing page after hosting everything
+        fh.createLandingPage();
         //start gui
         SwingUtilities.invokeLater(Gui::init);
     }
