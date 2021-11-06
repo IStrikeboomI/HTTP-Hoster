@@ -100,7 +100,7 @@ public class Gui {
         frame.setContentPane(splitPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setSize(580, 700);
+        frame.setSize((int) (Toolkit.getDefaultToolkit().getScreenSize().width * .3), (int) (Toolkit.getDefaultToolkit().getScreenSize().height * .64));
         frame.setResizable(false);
         //set to middle
         frame.setLocationRelativeTo(null);
