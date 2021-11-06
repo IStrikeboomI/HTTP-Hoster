@@ -18,7 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class Gui {
-    public static void init() {
+    JFrame frame;
+    public void init() {
         try {
             //make it look like the os gui
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -27,7 +28,7 @@ public class Gui {
         }
 
         //base frame
-        JFrame frame = new JFrame("HTTP Hoster");
+        frame = new JFrame("HTTP Hoster");
 
         //left side (urls)
         JPanel leftPanel = new JPanel();
@@ -49,39 +50,7 @@ public class Gui {
         for (String url : Main.fh.getFileURLs()) {
             //create a label
             JLabel label = new JLabel(url);
-
-            //adds underline and blue to make it look a link
-            label.setForeground(Color.BLUE);
-            Font font = label.getFont();
-            Map<TextAttribute, Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
-            attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-            label.setFont(font.deriveFont(attributes));
-
-            //add a mouse listener
-            label.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    //open in browser when url is clicked
-                    if (Desktop.isDesktopSupported()) {
-                        try {
-                            URL url = new URL(label.getText());
-                            //format urls for common replacements
-                            Desktop.getDesktop().browse(new URI(url.toString().replace(url.getPath(),"") + URLEncoder.encode(url.getPath(), StandardCharsets.UTF_8.displayName()).replaceAll("%2F","/").replaceAll("\\+", "%20").replaceAll("%21", "!").replaceAll("%27", "'").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%7E", "~")));
-                        } catch (IOException | URISyntaxException ioException) {
-                            ioException.printStackTrace();
-                        }
-                    }
-                }
-                //change cursor and mouse enter and leave, so it looks clickable
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                }
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                }
-            });
+            makeUrl(label);
             //add to panel
             leftPanel.add(label);
             //create spacing
@@ -131,5 +100,39 @@ public class Gui {
         //set to middle
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+    private void makeUrl(JLabel label) {
+        //adds underline and blue to make it look a link
+        label.setForeground(Color.BLUE);
+        Font font = label.getFont();
+        Map<TextAttribute, Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        label.setFont(font.deriveFont(attributes));
+
+        //add a mouse listener
+        label.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                //open in browser when url is clicked
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        URL url = new URL(label.getText());
+                        //format urls for common replacements
+                        Desktop.getDesktop().browse(new URI(url.toString().replace(url.getPath(),"") + URLEncoder.encode(url.getPath(), StandardCharsets.UTF_8.displayName()).replaceAll("%2F","/").replaceAll("\\+", "%20").replaceAll("%21", "!").replaceAll("%27", "'").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%7E", "~")));
+                    } catch (IOException | URISyntaxException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+            }
+            //change cursor and mouse enter and leave, so it looks clickable
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
     }
 }

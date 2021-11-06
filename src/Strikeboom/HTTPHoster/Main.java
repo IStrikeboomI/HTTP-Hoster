@@ -28,7 +28,8 @@ public class Main {
         //create landing page after hosting everything
         fh.createLandingPage();
         //start gui
-        SwingUtilities.invokeLater(Gui::init);
+        Gui gui = new Gui();
+        SwingUtilities.invokeLater(gui::init);
     }
     //for errors
     public static void sendErrorPrompt(String error) {
