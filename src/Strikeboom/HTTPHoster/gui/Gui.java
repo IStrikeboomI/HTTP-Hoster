@@ -50,19 +50,24 @@ public class Gui {
         for (String url : Main.fh.getFileURLs()) {
             //create a label
             JLabel label = new JLabel(url);
-            makeUrl(label);
+            makeUrl(label,label.getText());
             //add to panel
             leftPanel.add(label);
             //create spacing
             leftPanel.add(Box.createRigidArea(new Dimension(0, 3)));
         }
-        JLabel ipLabel = new JLabel("Your IP: " + FileHoster.ip);
+        JLabel ipLabel = new JLabel("Your IP: " + Main.ip);
         ipLabel.setBounds(5,0,290,30);
         rightPanel.add(ipLabel);
 
         JLabel portLabel = new JLabel( "Port: "  + Main.port);
         portLabel.setBounds(5,20,290,30);
         rightPanel.add(portLabel);
+
+        JLabel landingPageLabel = new JLabel( "Landing Page: http://" + Main.ip + ":" + Main.port);
+        landingPageLabel.setBounds(5,40,290,30);
+        makeUrl(landingPageLabel,"http://" + Main.ip + ":" + Main.port);
+        rightPanel.add(landingPageLabel);
 
         JLabel isRunningLabel = new JLabel("Status: Not Running");
         isRunningLabel.setBounds(100,325,200,30);
@@ -101,7 +106,7 @@ public class Gui {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    private void makeUrl(JLabel label) {
+    private void makeUrl(JLabel label, String urlText) {
         //adds underline and blue to make it look a link
         label.setForeground(Color.BLUE);
         Font font = label.getFont();
@@ -116,7 +121,7 @@ public class Gui {
                 //open in browser when url is clicked
                 if (Desktop.isDesktopSupported()) {
                     try {
-                        URL url = new URL(label.getText());
+                        URL url = new URL(urlText);
                         //format urls for common replacements
                         Desktop.getDesktop().browse(new URI(url.toString().replace(url.getPath(),"") + URLEncoder.encode(url.getPath(), StandardCharsets.UTF_8.displayName()).replaceAll("%2F","/").replaceAll("\\+", "%20").replaceAll("%21", "!").replaceAll("%27", "'").replaceAll("%28", "(").replaceAll("%29", ")").replaceAll("%7E", "~")));
                     } catch (IOException | URISyntaxException ioException) {

@@ -10,6 +10,7 @@ import Strikeboom.HTTPHoster.resourcesfolder.ResourceFolder;
 import javax.swing.*;
 
 public class Main {
+    public static String ip;
     public static int port;
     public static FileHoster fh;
     public static boolean isRunning;

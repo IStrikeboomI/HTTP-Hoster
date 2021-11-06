@@ -15,15 +15,13 @@ import java.util.List;
 public class FileHoster {
     HttpServer server;
     int port;
-    //the user's ip address
-    public static String ip;
     //all the urls of the files
     List<String> fileURLs = new ArrayList<>();
     public FileHoster(int port) {
         try {
             //these 3 lines are to get the users ip through the site
             BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("http://bot.whatismyipaddress.com/").openStream()));
-            ip = reader.readLine().trim();
+            Main.ip = reader.readLine().trim();
             reader.close();
 
             this.port = port;
@@ -36,7 +34,7 @@ public class FileHoster {
     }
     public void host(File file, String filePath) {
         //add file with path
-        fileURLs.add("http://" + ip + ":" + port + filePath);
+        fileURLs.add("http://" + Main.ip + ":" + port + filePath);
         //create a new context for the filepath
         server.createContext(filePath,httpExchange -> {
             //give the headers only if there is a header
