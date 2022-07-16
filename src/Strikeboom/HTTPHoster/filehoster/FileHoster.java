@@ -6,8 +6,7 @@ import Strikeboom.HTTPHoster.landingpage.LandingPage;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.URL;
+import java.net.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +18,14 @@ public class FileHoster {
     List<String> fileURLs = new ArrayList<>();
     public FileHoster(int port) {
         try {
-            //these 3 lines are to get the users ip through the site
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("http://bot.whatismyipaddress.com/").openStream()));
+            //gets the external ip address of the computer
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com/").openConnection().getInputStream()));
             Main.ip = reader.readLine().trim();
             reader.close();
 
             this.port = port;
             server = HttpServer.create(new InetSocketAddress(port),0);
             server.setExecutor(null);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
