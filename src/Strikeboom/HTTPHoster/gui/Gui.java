@@ -1,7 +1,6 @@
 package Strikeboom.HTTPHoster.gui;
 
 import Strikeboom.HTTPHoster.Main;
-import Strikeboom.HTTPHoster.filehoster.FileHoster;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,7 +46,7 @@ public class Gui {
         splitPane.setEnabled(false);
 
         //make url for each resource url
-        for (String url : Main.fh.getFileURLs()) {
+        for (String url : Main.fileHoster.getFileURLs()) {
             //create a label
             JLabel label = new JLabel(url);
             makeUrl(label,label.getText());
@@ -78,7 +77,7 @@ public class Gui {
         rightPanel.add(startButton);
         //change text when started running
         startButton.addActionListener(e -> {
-            Main.fh.start();
+            Main.fileHoster.start();
             isRunningLabel.setText("Status: Running");
         });
 
